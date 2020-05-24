@@ -36,41 +36,37 @@
                   </form>
                 </div>
                 </nav>
-
-               
-
-                <div class="container mt-5">
+                <div class="container mt-5  ">
                   <div class="card">
                     
-
-
                 <div class="row  ">  
                    <div class="col-2  border-right mt-1 ">
+                     <h4> Documents </h4>
                      <ul>
                        <li v-for="n in 4" :key=n >  <button @click="newTab(n)"  type="button" class="btn btn-link "  >  {{"Document "+n}}  </button>
                           </li>
                      </ul>
                       
                    </div>
-                   <div class="col-9">
-                   
-                      <ul id="example-1" class="nav nav-tabs mt-3 mb-3 pb-5 "  >
-                            <li class="nav-item px-3 " v-for="i in tabs" :key="i">
-
-                              <a  :class="[i != selected ? 'nav-link' :'nav-link active']"  @click="change(i)" > {{ "document  " + i }}  </a> 
-                                          <span  @click="closeTab(i)" class="badge badge-dark cross "> x </span>
-                                  <div :class="[i != selected ? 'tab-content' :'']" id="myTabContent"  >
-                                        <div class="tab-pane border-right border-left  px-2 ">
-                                               this is the content of Document {{i}} 
-                                        </div> 
-                                  </div>
-                            </li>
-                            
-                          </ul>
+                   <div class="col-9 ml-2 ">
+                      <ul>
+                        <div class="row mt-2  ">
+                         <div :class="[i != selected ? ' non-active col-3' :'active col-3']" v-for="i in tabs" :key="i">
+                            <span  @click="closeTab(i)" class="badge  cross text-danger  "> x </span>
+                         <button  type="button" @click="change(i)"  class="btn ">
+                              Document {{i}}
+                         </button>
+                         </div>
+                        </div>
+                        <div class="row active body  " v-show="tabs.length > 0" >
+                            <div class=" p-3 ">
+                              this is the content of Document {{selected}}
+                             </div>
+                        </div>
+                      </ul>
                 </div> 
                 </div>
               </div>
-
               </div>
     
       
@@ -87,9 +83,6 @@ export default {
   name: 'HelloWorld',
   props: {
     msg: String,
-    
-    
-    
   },
   data() {
       return {
@@ -103,31 +96,23 @@ export default {
      methods: {
        
       closeTab(x) {
-        console.log(x);
-        console.log(this.tabs.length);
         for (let i = 0; i < this.tabs.length; i++) {
           if (this.tabs[i] === x) {
             this.tabs.splice(i, 1)
           }
+          var last = (this.tabs.length -1);
         }
+        this.selected = this.tabs[last];
       },
 
       newTab(y) {
-
-        console.log(y);
-        for(let i=0; i<this.tabs.length; i++) {
-            if(this.tabs[i] === y){
-              console.log('this document is present');
-              this.selected = y;
-              i= this.tabs.lenght;
-            }                      
-            }
-            if( this.tabs.length < 4  )
-                {
-                 this.tabs.push(y); 
-               }
-        
-      
+          if(this.tabs.includes(y))
+          {
+            this.selected = y;
+          }
+          else{
+            this.tabs.push(y);
+          }
       },
     
     change(active){
@@ -163,11 +148,23 @@ a {
 }
 .cross{
   position: relative;
-  top:-30px;
-  right:-70px;
+  top:-5px;
+  right:-150px;
 
 }
+.non-active{
+  background-color: rgb(185,185,185)  ;
+}
 .active{
-  background-color: lightblue !important;
+  background-color: rgb(225,225,225) !important;
+}
+
+.btn:focus{
+outline: 0;
+box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0);
+}
+.body{
+  height:100px;
+  
 }
 </style>
